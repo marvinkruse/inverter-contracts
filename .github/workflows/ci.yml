@@ -23,8 +23,9 @@ jobs:
               with:
                   submodules: recursive
 
-            - name: Comment PR
+            - name: Comment PR with execution number
               uses: thollander/actions-comment-pull-request@v2
               with:
                   message: |
-                      Hello world ! :wave:
+                      _(execution **${{ github.run_id }}** / attempt **${{ github.run_attempt }}**)_
+                  comment_tag: execution
