@@ -29,17 +29,30 @@ jobs:
                   version: nightly
 
             - name: Compile contracts
+              id: compile_contracts
               run: forge build
 
-            - name: Save compiled artifacts
-              uses: actions/upload-artifact@v4
-              with:
-                  name: compiled-artifacts
-                  path: |
-                      out/
-                      cache/
+            - name: Determine reaction
+              if: always()
+              id: reaction
+              run: |
+                  if [ "${{ steps.compile_contracts.outcome }}" = "success" ]; then
+                    echo "reaction=rocket" >> $GITHUB_OUTPUT
+                  else
+                    echo "reaction=-1" >> $GITHUB_OUTPUT
+                  fi
+
             - name: Comment PR
+              if: always()
               uses: thollander/actions-comment-pull-request@v2
+              continue-on-error: true
               with:
                   message: |
-                      Hello world ! :wave:
+                      This is the **bot**.
+                      Good work on the run
+                      * Compiler: ${{ steps.compile_contracts.outcome == 'success' && '✅ Passed' || '❌ Failed' }}
+
+                      _(execution **${{ github.run_id }}** / attempt **${{ github.run_attempt }}**)_
+                  comment_tag: execution
+                  mode: recreate
+                  reactions: ${{ steps.reaction.outputs.reaction }}
