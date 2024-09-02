@@ -11,7 +11,7 @@ import {
 } from "src/orchestrator/interfaces/IOrchestrator_v1.sol";
 import {IModule_v1} from "src/modules/base/IModule_v1.sol";
 import {IModuleManagerBase_v1} from
-    "src/orchestrator/interfaces/IModuleManagerBase_v1.sol";
+    "src/orchestrator/interfaces/IModuleManagerBase_v1.sol"
 
 // Internal Dependencies
 import {ModuleManagerBase_v1} from

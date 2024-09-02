@@ -34,6 +34,7 @@ jobs:
 
             - name: Comment PR
               uses: thollander/actions-comment-pull-request@v2
+              continue-on-error: true
               with:
                   message: |
                       This is the **bot**.
