@@ -42,27 +42,6 @@ jobs:
                     echo "reaction=-1" >> $GITHUB_OUTPUT
                   fi
 
-            - name: Remove existing reactions
-              if: always()
-              uses: actions/github-script@v6
-              with:
-                  github-token: ${{secrets.GITHUB_TOKEN}}
-                  script: |
-                      const { owner, repo, number } = context.issue;
-                      const reactions = ['rocket', '-1'];
-                      for (const reaction of reactions) {
-                        try {
-                          await github.rest.reactions.deleteForIssueComment({
-                            owner,
-                            repo,
-                            comment_id: ${{ github.event.pull_request.number }},
-                            reaction_id: reaction
-                          });
-                        } catch (error) {
-                          console.log(`No ${reaction} reaction to remove or error removing it:`, error);
-                        }
-                      }
-
             - name: Comment PR
               if: always()
               uses: thollander/actions-comment-pull-request@v2
@@ -75,4 +54,5 @@ jobs:
 
                       _(execution **${{ github.run_id }}** / attempt **${{ github.run_attempt }}**)_
                   comment_tag: execution
+                  mode: recreate
                   reactions: ${{ steps.reaction.outputs.reaction }}
