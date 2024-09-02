@@ -30,19 +30,20 @@ jobs:
 
             - name: Compile contracts
               id: compile_contracts
-              continue-on-error: true
               run: forge build
 
             - name: Determine reaction
+              if: always()
               id: reaction
               run: |
                   if [ "${{ steps.compile_contracts.outcome }}" = "success" ]; then
                     echo "reaction=rocket" >> $GITHUB_OUTPUT
                   else
-                    echo "reaction=thumbs_down" >> $GITHUB_OUTPUT
+                    echo "reaction=-1" >> $GITHUB_OUTPUT
                   fi
 
             - name: Comment PR
+              if: always()
               uses: thollander/actions-comment-pull-request@v2
               continue-on-error: true
               with:
