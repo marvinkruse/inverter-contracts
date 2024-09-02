@@ -23,11 +23,23 @@ jobs:
               with:
                   submodules: recursive
 
-            - name: Comment PR with execution number
+            - name: Install Foundry
+              uses: foundry-rs/foundry-toolchain@v1
+              with:
+                  version: nightly
+
+            - name: Compile contracts
+              id: compile_contracts
+              run: forge build
+
+            - name: Comment PR
               uses: thollander/actions-comment-pull-request@v2
-              continue-on-error: true
               with:
                   message: |
+                      This is the **bot**.
+                      Good work on the run
+                      * Compiler: ${{ steps.compile_contracts.outcome == 'success' && '✅ Passed' || '❌ Failed' }}
+
                       _(execution **${{ github.run_id }}** / attempt **${{ github.run_attempt }}**)_
                   comment_tag: execution
-                  reactions: +1
+                  reactions: rocket
