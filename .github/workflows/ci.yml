@@ -23,21 +23,6 @@ jobs:
               with:
                   submodules: recursive
 
-            - name: Install Foundry
-              uses: foundry-rs/foundry-toolchain@v1
-              with:
-                  version: nightly
-
-            - name: Compile contracts
-              run: forge build
-
-            - name: Save compiled artifacts
-              uses: actions/upload-artifact@v4
-              with:
-                  name: compiled-artifacts
-                  path: |
-                      out/
-                      cache/
             - name: Comment PR
               uses: thollander/actions-comment-pull-request@v2
               with:
